@@ -13,8 +13,13 @@ def home():
 @app.post("/predict")
 def predict(student: dict):
 
+    # Convert to dataframe
     df = pd.DataFrame([student])
-    
+
+    # Ensure column order matches training
+    df = df[model.feature_names_in_]
+
+    # Predict
     risk_prob = model.predict_proba(df)[0][1]
 
     if risk_prob < 0.3:
